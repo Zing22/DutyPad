@@ -1,0 +1,116 @@
+/*Pad*/
+
+html,
+body,
+#container,
+#Main {
+	height: 100%;
+	Font-family: Helvetica, Tahoma, Arial, STXihei, “华文细黑”, “Microsoft YaHei”, “微软雅黑”, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	Font-family: Helvetica, Tahoma, Arial, STXihei, “华文细黑”, “Microsoft YaHei”, “微软雅黑”, sans-serif
+}
+
+#container {
+	/*background-image: url(../img/bg.jpg);*/
+	background-size: cover;
+}
+
+#Main {
+	margin-top: 60px;
+	background-color: white;
+}
+
+.attached.bottom {
+	background-color: inherit;
+}
+
+body {
+	overflow: auto;
+	margin: 0px;
+	padding: 0px;
+}
+
+body > #container {
+	height: auto;
+	min-height: 100%;
+}
+
+#footer {
+	clear: both;
+	position: relative;
+	z-index: 10;
+	height: 5em;
+	margin-top: 0em;
+	margin-bottom: 1em;
+}
+
+.main.menu {
+	height: 5%;
+}
+
+.pad-ctrler {
+	height: 100%;
+}
+
+.progress-row {
+	margin-top: 10px;
+}
+
+#dutyDetail {
+	padding-right: 15%;
+}
+
+div.attached.segment {
+	border-bottom: 1px solid #D4D4D5;
+	border-left: 1px solid #D4D4D5;
+	border-right: 1px solid #D4D4D5;
+	padding-left: 1%;
+	padding-right: 1%;
+	padding-bottom: 1%;
+	margin-bottom: 10px;
+}
+
+.top-title {
+	margin-top: 10px;
+	margin-bottom: -15px;
+	border-bottom: 1px double darkgray;
+}
+
+.card-col {
+	margin-bottom: 10px;
+}
+
+.showSidebar {
+	float: left;
+	position: fixed;
+	top: 0px;
+}
+
+
+/* Login */
+
+.login-body {
+	background-color: #DADADA;
+	overflow: hidden;
+}
+
+.pad-col {
+	border: 0px solid black;
+	/*max-height: 200px;*/
+	overflow: auto;
+}
+
+body > .grid {
+	height: 100%;
+}
+
+.login-col {
+	max-width: 450px;
+}
