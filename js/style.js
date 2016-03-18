@@ -58,4 +58,12 @@ $(document).ready(function() {
 				ratio: '{value} / {total}'
 			}
 		});
+
+	$('.small.ui.progress')
+		.progress({
+			label: 'ratio',
+			text: {
+				ratio: '{value}'
+			}
+		});
 });

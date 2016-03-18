@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-		<title>查看 - 本子</title>
+		<title>总览 - 本子</title>
 		<!--angular JS-->
 		<script type="text/javascript" src="http://libs.useso.com/js/angular.js/1.2.9/angular.min.js"></script>
 		<!--semantic css-->
@@ -45,8 +45,11 @@
 			<a class="item">
 				<i class="book icon green"></i> 本子
 			</a>
-			<a class="item">
-				<i class="payment layout icon"></i> 工时
+			<a class="item" href="times.html">
+				<i class="tasks layout icon"></i> 工时
+			</a>
+			<a class="item" href="detail.html">
+				<i class="history layout icon"></i> 详情
 			</a>
 			<a class="item bottom">
 				<i class="settings icon"></i> 管理
@@ -55,7 +58,7 @@
 
 		<div ng-controller="PadController" class="pad-ctrler pusher" id="container">
 
-			<div class="showSidebar" ng-click="showSidebar()">
+			<div class="showSidebar" id="SideBar">
 				<div class="ui button animated fade white" tabindex="0">
 					<div class="visible content"><i class="sidebar icon button"></i></div>
 					<div class="hidden content">菜单</div>
@@ -94,7 +97,7 @@
 								</div>
 								<div class="three wide column right aligned">
 									<div class="ui progress-row" id="dutyDetail">
-										<button class="ui inverted green button large">值班详情</button>
+										<a class="ui inverted green button large" href="detail.html" target="_blank">值班详情</a>
 									</div>
 								</div>
 							</div>
@@ -479,7 +482,7 @@
 								<div class="row">
 									<div class="column six wide">
 										<div class="ui left icon input fluid">
-											<input type="date" ng-model="checkBeginDate">
+											<input type="date" ng-model="checkBeginDate" value="2016-05-01">
 											<i class="calendar icon"></i>
 										</div>
 									</div>

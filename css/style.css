@@ -49,13 +49,14 @@ body > #container {
 	height: 5em;
 	margin-top: 0em;
 	margin-bottom: 1em;
+	background: inherit;
 }
 
 .main.menu {
 	height: 5%;
 }
 
-.pad-ctrler {
+.pusher {
 	height: 100%;
 }
 
@@ -113,4 +114,9 @@ body > .grid {
 
 .login-col {
 	max-width: 450px;
+}
+
+/* Times */
+.small.ui.progress {
+	margin-bottom: 0px;
 }

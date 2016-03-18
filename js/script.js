@@ -34,3 +34,7 @@ var getUserCheckDate = function(d) {
 	var day = d.getDate();
 	return year + "-" + month + "-" + day;
 }
+
+$("#SideBar").click(function() {
+	$('.ui.labeled.icon.sidebar').not('.styled').sidebar('toggle');
+});

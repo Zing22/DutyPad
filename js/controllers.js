@@ -3,7 +3,6 @@ app.controller('MainController', function($scope) {
 });
 
 app.controller('PadController', function($scope) {
-	$scope.message = "This is pad";
 	$scope.nowTimes = 17;
 	$scope.accTimes = 12;
 	$scope.nowPad0 = 1;
@@ -21,10 +20,8 @@ app.controller('PadController', function($scope) {
 	$scope.checkBeginDateStr = getCheckInitStr($scope.checkBeginDate);
 
 	// sidebar
-	$scope.showSidebar = function(room) {
-		$('.ui.labeled.icon.sidebar').not('.styled').sidebar('toggle');
-	}
-	
+
+
 	// check duty record
 	$scope.setBeginDay = function() {
 		$("#setBeginDayModal").modal('show');
@@ -32,4 +29,51 @@ app.controller('PadController', function($scope) {
 	$scope.alertDate = function() {
 		alert($scope.checkBeginDate);
 	}
-})
+});
+
+
+app.controller('TimesController', function($scope) {
+	// pages ctrl
+	$scope.item1 = true;
+	
+	// process bar
+	$scope.nowTimes = 25.3;
+	$scope.accTimes = 12.3;
+	$scope.perWorth = 12.00;
+	
+	// check history
+	$scope.nowDate = getNowDateStr();
+	$scope.checkBeginDate = new Date();
+	$scope.checkBeginDateStr = getCheckInitStr($scope.checkBeginDate);
+
+
+	// check duty record
+	$scope.setBeginDay = function() {
+		$("#setBeginDayModal").modal('show');
+	}
+	$scope.alertDate = function() {
+		alert($scope.checkBeginDate);
+	}
+});
+
+
+app.controller('DetailController', function($scope) {
+	// process bar
+	$scope.nowTimes = 25.3;
+	$scope.accTimes = 12.3;
+	$scope.perWorth = 12.00;
+	
+	// check history
+	$scope.nowDate = getNowDateStr();
+	$scope.checkBeginDate = new Date();
+	$scope.checkBeginDateStr = getCheckInitStr($scope.checkBeginDate);
+
+
+	// check duty record
+	$scope.setBeginDay = function() {
+		$("#setBeginDayModal").modal('show');
+	}
+	$scope.alertDate = function() {
+		alert($scope.checkBeginDate);
+	}
+});
