@@ -1,31 +1,27 @@
 var app = angular.module('DutyPad', ['ng']);
 
-//var initPer = function iper(per) {
-//	setTimeout(function() {
-//		$('#my-progress').progress('increment');
-//		if (per < 72) {
-//			iper(per + 1);
-//		}
-//	}, 300);
-//};
+$(document).ready(function() {
+	// login begin
+	$("#login-btn").click(function(event) {
+		var param = {
+			"username": $("input[name='username']").val(),
+			"password": $("input[name='password']").val()
+		}
+		var str = $.param(param);
+		$.post("http://127.0.0.1:5000/test", str, function(data){
+			console.log(data);
+		})
+	})
+	// login end
 
-// test!
-$('#addMore1').click(function() {
-	$(this).addClass("loading");
-});
+})
+
 
 var getNowDateStr = function() {
 	var d = new Date();
 	var month = d.getMonth() + 1;
 	var day = d.getDate();
 	return month + "月" + day + "日";
-}
-
-var getCheckInitStr = function(d) {
-	var year = d.getFullYear();
-	var month = d.getMonth() + 1;
-	var day = d.getDate();
-	return year + "年" + month + "月" + day + "日";
 }
 
 var getUserCheckDate = function(d) {
@@ -37,4 +33,8 @@ var getUserCheckDate = function(d) {
 
 $("#SideBar").click(function() {
 	$('.ui.labeled.icon.sidebar').not('.styled').sidebar('toggle');
+});
+
+$("#SideBar").mouseover(function() {
+	$('.ui.labeled.icon.sidebar').not('.styled').sidebar('show');
 });

@@ -34,6 +34,8 @@
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.min.js"></script>
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/form.min.js"></script>
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/transition.min.js"></script>
+		<!-- custom JS-->
+		<script src="../js/script.js" type="text/javascript" charset="utf-8"></script>
 
 	</head>
 
@@ -43,7 +45,7 @@
 				<h2 class="ui teal image header">
 					<img src="http://semantic-ui.com/examples/assets/images/logo.png" class="image">
 					<div class="content">
-						Log-in to your account
+						Log-in to Duty-Pad
 					</div>
 				</h2>
 				<form class="ui large form">
@@ -51,16 +53,16 @@
 						<div class="field">
 							<div class="ui left icon input">
 								<i class="user icon"></i>
-								<input type="text" name="email" placeholder="E-mail address">
+								<input type="text" name="username" placeholder="Username">
 							</div>
 						</div>
 						<div class="field">
 							<div class="ui left icon input">
 								<i class="lock icon"></i>
-								<input type="password" name="password" placeholder="Password">
+								<input type="password" name="password" placeholder="password">
 							</div>
 						</div>
-						<div class="ui fluid large teal submit button">Login</div>
+						<div class="ui fluid large teal submit button" id="login-btn">Login</div>
 					</div>
 
 					<div class="ui error message"></div>
@@ -68,10 +70,11 @@
 				</form>
 
 				<div class="ui message">
-					New to us? <a href="#">Sign Up</a>
+					Read more, eat less.
 				</div>
 			</div>
 		</div>
+		<script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
 	</body>
 
 </html>

@@ -48,10 +48,7 @@
 			<a class="item">
 				<i class="tasks layout icon green"></i> 工时
 			</a>
-			<a class="item" href="detail.html">
-				<i class="history layout icon"></i> 详情
-			</a>
-			<a class="item bottom">
+			<a class="item" href="manage.html">
 				<i class="settings icon"></i> 管理
 			</a>
 		</div>
@@ -68,10 +65,99 @@
 			<div class="ui container piled segment" id="Main">
 				<div class="ui top attached tabular menu">
 					<span class="item"><b>签到本   </b></span>
-					<a class="green item active" ng-click="item1=1; item2=0">本月工时</a>
-					<a class="green item" ng-click="item1=0; item2=1">历史工时</a>
+					<a class="green item active" ng-click="pad0=1; pad1=0; pad2=0">我的工时详情</a>
+					<a class="green item" ng-click="pad0=0; pad1=1; pad2=0">本月工时</a>
+					<a class="green item" ng-click="pad0=0; pad1=0; pad2=1">历史工时</a>
 				</div>
-				<div class="item1" ng-show="item1">
+				<div class="pad0" ng-show="pad0">
+					<div class="ui one column grid">
+						<div class="row fluid">
+							<div class="five wide column fluid">
+								<div class="ui top-title fluid">
+									<h1 class="fluid">我的本月工时</h1>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="sixteen wide column">
+								<div class="ui progress-row">
+									<div class="ui large indicating progress" data-value="{{nowTimes}}" data-total="40" id="my-progress">
+										<div class="bar">
+											<div class="progress"></div>
+										</div>
+										<div class="label">本月工时：{{nowTimes}}， 累积工时：{{accTimes}}，总值：￥{{(nowTimes+accTimes)*perWorth | number:2}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="five wide column fluid">
+								<div class="ui top-title fluid">
+									<h1 class="fluid">我的值班记录</h1>
+								</div>
+							</div>
+							<div class="seven wide column">
+
+							</div>
+							<div class="four wide column">
+								<div class="ui button basic animated fade black huge fluid" tabindex="0" ng-click="setBeginDay()">
+									<div class="visible content">{{checkBeginDateStr}}</div>
+									<div class="inverted hidden content">
+										<i class="calendar outline icon"></i> 更改起始日期
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="column">
+							<table class="ui table selectable complex">
+								<thead>
+									<tr>
+										<th>日期</th>
+										<th>时间</th>
+										<th>工时</th>
+										<th>值班说明</th>
+										<th>待办事项</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr class="positive">
+										<td rowspan="3">3-14</td>
+										<td>8:00 - 12:30</td>
+										<td>{{4.5 * 1.5}}</td>
+										<td>加班</td>
+										<td>无</td>
+									</tr>
+									<tr class="warning">
+										<td>13:30 - 6:30</td>
+										<td>7</td>
+										<td>拖堂了！</td>
+										<td>无</td>
+									</tr>
+									<tr>
+										<td>19:00 - 21:45</td>
+										<td>2.75</td>
+										<td>无</td>
+										<td>无</td>
+									</tr>
+									<tr class="error">
+										<td>3-13</td>
+										<td>8:00 - 12:30</td>
+										<td>-2</td>
+										<td>迟到一节课，让老师找不到助理，导致上课事故。</td>
+										<td>无</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="row centered">
+							<div class="ui button basic animated fade grey" tabindex="0" id="addMore1">
+								<div class="visible content">加载更多</div>
+								<div class="inverted hidden content"><i class="icon plus"></i> more</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pad1" ng-show="pad1">
 					<div class="ui column grid middle aligned">
 						<div class="row fluid">
 							<div class="five wide column fluid">
@@ -152,7 +238,7 @@
 					</div>
 				</div>
 
-				<div class="item2" ng-show="item2">
+				<div class="pad2" ng-show="pad2">
 					<div class="ui column grid middle aligned">
 						<div class="row fluid">
 							<div class="five wide column fluid">
