@@ -1,7 +1,3 @@
-app.controller('MainController', function($scope) {
-	$scope.message = "This is angular.";
-});
-
 // pad记录是否要高亮。
 app.filter('padHighlight', function() {
 	return function(isImportant) {
@@ -24,6 +20,20 @@ app.filter('isEmpty', function() {
 	}
 })
 
+// 设置行颜色，0表示无色，1表示绿色，-1表示红色
+// 用于管理员查看个人签到记录里的 奖惩记录
+app.filter('setColor', function() {
+	return function(color) {
+		if (color == 1) {
+			return "positive";
+		} else if (color == -1) {
+			return "error";
+		} else {
+			return "";
+		}
+	}
+})
+
 app.controller('PadController', function($scope) {
 	$scope.perWorth = 12; // 每小时12元
 	$scope.nowPad = 0; // 现在是第几个选项卡
@@ -33,11 +43,16 @@ app.controller('PadController', function($scope) {
 	$scope.nowTimes = 0;
 	$scope.accTimes = 0;
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
-		$scope.nowTimes = 36;
+		$scope.nowTimes = 61;
 		$scope.accTimes = 4;
 		$scope.$apply();
 		$("#my-progress").progress({
-			value: $scope.nowTimes
+			value: $scope.nowTimes,
+			total: Math.max(40, $scope.nowTimes),
+			label: 'ratio',
+			text: {
+				ratio: '{value} / {total}'
+			}
 		})
 		$("body").fadeIn();
 	});
@@ -65,15 +80,6 @@ app.controller('PadController', function($scope) {
 			"id": 1
 		}];
 		$scope.$apply();
-		$.get("http://127.0.0.1:5000/test", "", function(data) {
-			$scope.nowTimes = 36;
-			$scope.accTimes = 4;
-			$scope.$apply();
-			$("#my-progress").progress({
-				value: $scope.nowTimes
-			})
-			$("body").fadeIn();
-		});
 	})
 
 	// 解决了待办事项 , id需要获取。
@@ -124,8 +130,7 @@ app.controller('PadController', function($scope) {
 				"note": "Good day",
 				"needTo": "",
 				"isImportant": 0
-			},
-			{
+			}, {
 				"date": "2016/04/23",
 				"beginTime": "13:30:00",
 				"times": 4.5,
@@ -139,12 +144,70 @@ app.controller('PadController', function($scope) {
 			btn.removeClass("loading");
 		});
 	}); // 401 end
-	// 402 ~ 404 还没复制粘贴
+	// 402 ~ 403 还没复制粘贴
+
+	// 奖惩记录
+	$scope.PadList404 = []; // 储存已经加载到的列表
+	$scope.checkBeginDate404 = new Date(); // 加载本子的起始日期
+	$scope.padBeginNumber404 = 0; // 已经加载了多少天的记录了
+	$('#addMore4').click(function() {
+		var btn = $(this);
+		btn.addClass("loading");
+		var params = {
+			"beginDate": $scope.checkBeginDate404,
+			"room": "B404",
+			"beginNumber": $scope.padBeginNumber404
+		}
+		var str = $.param(params);
+		$.post("http://127.0.0.1:5000/test", str, function(data) {
+			$scope.padBeginNumber404 += 2;
+			$scope.PadList404 = $scope.PadList404.concat([{
+				"date": "2016/04/23",
+				"times": 4.5,
+				"name": "LittleBin",
+				"note": "Good day",
+				"isImportant": 0
+			}, {
+				"date": "2016/04/23",
+				"times": -2.5,
+				"name": "LittleBin",
+				"note": "",
+				"isImportant": 1
+			}]);
+			$scope.$apply();
+			btn.removeClass("loading");
+		});
+	});
+
+	// 设置起始日期
+	$scope.setBeginDayShow = function() { // 重设开始的日期，需要清空原有的。
+		if ($scope.nowPad == 1) {
+			$scope.checkBeginDateShow = $scope.checkBeginDate401;
+		}
+		$scope.checkBeginDate = $scope.checkBeginDateShow;
+		$("#setBeginDayModal").modal('show');
+	}
+	$scope.setBeginDay = function() {
+		if ($scope.nowPad == 1) {
+			$scope.checkBeginDate401 = $scope.checkBeginDate;
+			$scope.PadList401 = [];
+			$scope.padBeginNumber401 = 0;
+			$('#addMore1').click(); // 重新加载401的签到记录
+		}
+		swal({
+			title: "成功",
+			text: $scope.checkBeginDate401,
+			type: "success",
+			confirmButtonText: "确定"
+		});
+	}
 
 	$scope.changePad = function(NO) { // 切换选项卡
 		$scope.nowPad = NO;
 		if (NO == 1 && $scope.PadList401.length == 0) { // 第一次切换到本子会自动加载一次
 			$("#addMore1").click();
+		} else if (NO == 4 && $scope.PadList404.length == 0) {
+			$("#addMore4").click();
 		}
 	}
 
@@ -199,87 +262,416 @@ app.controller('PadController', function($scope) {
 	$scope.nowDate = getNowDateStr();
 
 	// 查看本子
-	$scope.setBeginDayShow = function() { // 重设开始的日期，需要清空原有的。
-		if ($scope.nowPad == 1) {
-			$scope.checkBeginDateShow = $scope.checkBeginDate401;
+
+	$scope.Math = window.Math;
+});
+////// 首页结束
+///////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////
+////// 工时页开始！
+app.controller('TimesController', function($scope, $filter) {
+	// 显示第几页
+	$scope.nowPad = 0;
+	$scope.changePad = function(NO) { // 切换选项卡
+		$scope.nowPad = NO;
+	}
+
+	// 个人工时
+	$scope.perWorth = 12;
+	$scope.nowTimes = 0;
+	$scope.accTimes = 0;
+	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		$scope.nowTimes = 31.3;
+		$scope.accTimes = 4;
+		$scope.$apply();
+		$("#my-progress").progress({
+			value: $scope.nowTimes,
+			total: Math.max(40, $scope.nowTimes),
+			label: 'ratio',
+			text: {
+				ratio: '{value} / {total}'
+			}
+		})
+		$("body").fadeIn();
+	});
+
+	// 查看个人工时记录
+	$scope.PadList = []; // 储存已经加载到的列表
+	$scope.checkBeginDate = new Date(); // 加载本子的起始日期
+	$scope.padBeginNumber = 0; // 已经加载了多少天的记录了
+	$('#addMore').click(function() {
+		var btn = $(this);
+		btn.addClass("loading");
+		var params = {
+			"beginDate": $scope.checkBeginDate,
+			"beginNumber": $scope.padBeginNumber
 		}
-		$scope.checkBeginDate = $scope.checkBeginDateShow;
+		var str = $.param(params);
+		$.post("http://127.0.0.1:5000/test", str, function(data) {
+			$scope.padBeginNumber += 2;
+			$scope.PadList = $scope.PadList.concat([{ // no names
+				"date": "2016/04/23",
+				"beginTime": "13:30:00",
+				"times": 4.5,
+				"endTime": "17:00:03",
+				"note": "Good day",
+				"needTo": "",
+				"isImportant": 0
+			}, {
+				"date": "2016/04/23",
+				"beginTime": "13:30:00",
+				"times": 4.5,
+				"endTime": "17:00:03",
+				"note": "",
+				"needTo": "教师机炸了",
+				"isImportant": 1
+			}]);
+			$scope.$apply();
+			btn.removeClass("loading");
+		});
+	});
+
+	// 更改起始日期
+	$scope.setBeginDayShow = function() { // 重设开始的日期，需要清空原有的。
+		$scope.checkBeginDateShow = $scope.checkBeginDate;
+		$scope.checkBeginDateModify = $scope.checkBeginDateShow;
 		$("#setBeginDayModal").modal('show');
 	}
 	$scope.setBeginDay = function() {
-		if ($scope.nowPad == 1) {
-			$scope.checkBeginDate401 = $scope.checkBeginDate;
-			$scope.PadList401 = [];
-			$scope.padBeginNumber401 = 0;
-			$('#addMore1').click(); // 重新加载401的签到记录
-		}
+		$scope.checkBeginDate = $scope.checkBeginDateModify;
+		$scope.PadList = [];
+		$scope.padBeginNumber = 0;
+		$('#addMore').click(); // 重新加载401的签到记录
 		swal({
-			title: "成功！",
-			text: $scope.checkBeginDate401,
+			title: "成功",
+			text: $scope.checkBeginDateModify,
 			type: "success",
 			confirmButtonText: "确定"
 		});
 	}
 
+	// 查看本月工时
+	$scope.MonthList = [];
+	$.get("http://127.0.0.1:5000/test", "", function() {
+		$scope.MonthList = [{
+			"name": "小彬",
+			"times": 34,
+			"last": 12
+		}, {
+			"name": "紫薇",
+			"times": 67.2,
+			"last": 123
+		}, {
+			"name": "渔政",
+			"times": 37,
+			"last": 38.8
+		}];
+		$scope.$apply();
+		$(".month-row").each(function(n, el) {
+			var pro = $($(el).find(".indicating.progress"));
+			var times = pro.attr('data-value');
+			pro.progress({
+				value: times,
+				total: Math.max(40, times),
+				label: 'ratio',
+				text: {
+					ratio: '{value} / {total}'
+				}
+			});
+			//			console.log(times);
+		});
+	});
+
+	// 查看历史工时
+	$scope.historyList = {
+		"0": "请选择表格"
+	}; // 所有的死表列表
+	$scope.nowHistoryTable = []; // 目前在查看的死表
+	$scope.checkHistory = ""; // 绑定为select的值
+	$.get("http://127.0.0.1:5000/test", "", function(data) { // 获取列表
+		$scope.historyList = {
+			"1": "2016/03工时统计",
+			"2": "2016/04工时统计"
+		}; // 获得待选列表
+		$scope.$apply();
+	});
+
+	$scope.getHistoryTable = function() {
+		var params = {
+			"id": $scope.checkHistory
+		}
+		var str = $.param(params);
+		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			$scope.nowHistoryTable = [{
+				"name": "李一正",
+				"sid": "14348888",
+				"times": 47,
+				"last": 24,
+				"willGet": 40,
+				"willLast": 31,
+				"note": "帮忙搬东西 +3; FFC比赛加班 +12; 无故缺勤 -2; 维修小分队 +40"
+			}, {
+				"name": "李二正",
+				"sid": "14342288",
+				"times": 23,
+				"last": 121,
+				"willGet": 40,
+				"willLast": 104,
+				"note": "FFC比赛加班 +12"
+			}]
+			$scope.$apply();
+		});
+	}
+
 	$scope.Math = window.Math;
 });
+/////////////////////////////////////////////
 
-app.controller('TimesController', function($scope) {
-	// pages ctrl
-	$scope.pad0 = true;
-
-	// process bar
-	$scope.nowTimes = 25.3;
-	$scope.accTimes = 12.3;
-	$scope.perWorth = 12.00;
-
-	// check history
-	$scope.nowDate = getNowDateStr();
-	$scope.checkBeginDate = new Date();
-	$scope.checkBeginDateStr = getCheckInitStr($scope.checkBeginDate);
-
-	// check duty record
-	$scope.setBeginDay = function() {
-		$("#setBeginDayModal").modal('show');
-	}
-	$scope.alertDate = function() {
-		alert($scope.checkBeginDate);
-	}
-});
-
+/////////////////////////////////////////////
+///////// 管理页面
 app.controller('ManageController', function($scope) {
-	// pads
-	$scope.nowPad0 = 1;
+	// 显示第几页
+	$scope.nowPad = 0;
+	$scope.changePad = function(NO) { // 切换选项卡
+		$scope.nowPad = NO;
+	}
 
-	// pad0
-	$scope.nowName = "李煜政";
+	// 查看个人记录
+	$scope.nowWho = "0";
+	$scope.nameList = {
+		"0": "请先选择助理"
+	};
+	$scope.personalRecord = [];
 
-	// check history
-	$scope.nowDate = getNowDateStr();
-	$scope.checkBeginDate = new Date();
-	$scope.checkBeginDateStr = getCheckInitStr($scope.checkBeginDate);
+	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		$scope.nameList = {
+			"1": "李煜政",
+			"2": "赖子威",
+			"3": "高山"
+		}
+		$scope.$apply();
+	});
+
+	$scope.selectPerson = function() {
+		var params = {
+			"id": $scope.nowWho
+		}
+		var str = $.param(params);
+		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			$scope.personalRecord = [{
+				"date": "4-14",
+				"beginTime": "13:30:23",
+				"endTime": "17:00:03",
+				"room": "B403",
+				"times": 5,
+				"note": "",
+				"needTo": "",
+				"color": 0
+			}, {
+				"date": "4-14",
+				"beginTime": "13:30:23",
+				"endTime": "17:00:03",
+				"room": "B403",
+				"times": 5,
+				"note": "",
+				"needTo": "",
+				"color": 1
+			}, {
+				"date": "4-14",
+				"beginTime": "13:30:23",
+				"endTime": "17:00:03",
+				"room": "B403",
+				"times": 5,
+				"note": "",
+				"needTo": "",
+				"color": 0
+			}, {
+				"date": "4-14",
+				"beginTime": "13:30:23",
+				"endTime": "17:00:03",
+				"room": "B403",
+				"times": -2,
+				"note": "",
+				"needTo": "",
+				"color": -1
+			}];
+			$scope.$apply();
+		});
+	}
 
 	// check duty record
 	$scope.NewRecord = function() {
 		$("#setNewRecord").modal('show');
 	}
 
+	// 获取本月工时表
+	$scope.thisMonthAll = [];
+	$.get("http://127.0.0.1:5000/test", "abc=233", function(data) {
+		$scope.thisMonthAll = [{
+			"name": "小彬",
+			"sid": "14348079",
+			"times": 32,
+			"last": 67,
+			"willGet": 40,
+			"willLast": 59,
+			"note": "FFC比赛加班 +12"
+		}]
+		$scope.$apply();
+	});
+
+	// 显示确定死表的框
 	$scope.NewDeadTable = function() {
 		$("#setNewDeadTable").modal('show');
 	}
 
-	$scope.UndoDeadTable = function() {
-		isNewest = 0; // check from server
-		UndoErrorMsg = "";
-		if (isNewest == 0) { // OK
-			$("#undoDeadTableModal").modal('show');
-		} else if (isNewest == 1) { // NOT BOSS
-			UndoErrorMsg = "只有BOSS才能撤销噢..."
-			$("#undoTableErrorModal").modal('show');
-		} else if (isNewest == 2) { // NOT NEWEST
-			UndoErrorMsg = "只能撤销最新的一张表噢..."
-			$("#undoTableErrorModal").modal('show');
+	// 发送 确定新建死表
+	$scope.setNewHistory = function() {
+		var params = {
+			"title": $("#setHis-title").val()
 		}
+		var str = $.param(params);
+		$.post("http://127.0.0.1:5000/test", str, function(data) {
+			swal({
+				title: "统计成功",
+				text: "大伙都等着发工资呐",
+				type: "success",
+				confirmButtonText: "确定"
+			});
+		});
+	}
+
+	// 助理管理
+	$scope.newUser_sid = ""; // 学号，用于登陆
+	$scope.newUser_name = ""; // 姓名
+	$scope.newUser_pwd = ""; // 密码
+	$scope.newUser_pwd2 = ""; // 重复密码
+	$scope.newUser_phone = ""; // 手机长号
+	$scope.newUser_phone2 = ""; // 短号
+	$scope.newUser_card = ""; // 银行卡
+	$scope.newUser_auth = ""; // 权限（身份）
+	$scope.newUser_check = function() {
+		if (!($scope.newUser_sid && $scope.newUser_name && $scope.newUser_pwd && $scope.newUser_pwd2 && $scope.newUser_phone && $scope.newUser_phone2 &&
+				$scope.newUser_card && $scope.newUser_auth)) {
+			swal({
+				title: "失败了",
+				text: "还有些信息没填呢",
+				type: "error",
+				confirmButtonText: "好吧"
+			});
+			return false;
+		};
+		if ($scope.newUser_pwd != $scope.newUser_pwd2) {
+			swal({
+				title: "失败了",
+				text: "两次密码不同呢",
+				type: "error",
+				confirmButtonText: "好吧"
+			});
+			return false;
+		};
+
+		// 开始构造
+		var params = {
+			"sid": $scope.newUser_sid,
+			"name": $scope.newUser_name,
+			"pwd": $scope.newUser_pwd,
+			"phone": $scope.newUser_phone,
+			"phone2": $scope.newUser_phone2,
+			"card": $scope.newUser_card,
+			"auth": $scope.newUser_auth
+		}
+		var str = $.param(params);
+		$.post("http://127.0.0.1:5000/test", str, function(data) {
+			swal({
+				title: "新增成功",
+				text: "快教TA用本系统吧~",
+				type: "success",
+				confirmButtonText: "确定"
+			});
+		});
+	};
+
+	// 查看、修改用户信息
+	$scope.User_sid = ""; // 学号，用于登陆
+	$scope.User_name = ""; // 姓名
+	$scope.User_pwd = ""; // 密码
+	$scope.User_email = ""; // 重复密码
+	$scope.User_phone = ""; // 手机长号
+	$scope.User_phone2 = ""; // 短号
+	$scope.User_card = ""; // 银行卡
+	$scope.User_auth = ""; // 权限（身份）
+	$scope.User_nowWho = "0"; // 下拉框选择了哪个助理
+	auth = ["助理", "管理员", "老大"];
+	$scope.User_selectPerson = function() {
+		var params = {
+			"sid": $scope.User_nowWho
+		}
+		var str = $.param(params);
+		console.log(str);
+		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			$scope.User_sid = "14348079"; // 学号，用于登陆
+			$scope.User_name = "大斌"; // 姓名
+			$scope.User_pwd = "123456"; // 密码
+			$scope.User_email = "123456"; // 重复密码
+			$scope.User_phone = "18819251234"; // 手机长号
+			$scope.User_phone2 = "209876"; // 短号
+			$scope.User_card = "3213312312312312312"; // 银行卡
+			$scope.User_auth = 2; // 权限（身份）
+			$("#User-select").dropdown('set selected', auth[$scope.User_auth]);
+			$scope.$apply();
+		});
+	}
+	$scope.User_check = function() {
+		if (!($scope.User_sid && $scope.User_name && $scope.User_pwd && $scope.User_pwd2 && $scope.User_phone && $scope.User_phone2 &&
+				$scope.User_card && $scope.User_auth)) {
+			swal({
+				title: "失败了",
+				text: "还有些信息没填呢",
+				type: "error",
+				confirmButtonText: "好吧"
+			});
+			return false;
+		};
+
+		// 开始构造
+		var params = {
+			"sid": $scope.User_sid,
+			"name": $scope.User_name,
+			"pwd": $scope.User_pwd,
+			"phone": $scope.User_phone,
+			"phone2": $scope.User_phone2,
+			"card": $scope.User_card,
+			"auth": $scope.User_auth
+		}
+		var str = $.param(params);
+		$.post("http://127.0.0.1:5000/test", str, function(data) {
+			swal({
+				title: "修改成功",
+				type: "success",
+				confirmButtonText: "确定"
+			});
+		});
+	}
+
+	$scope.User_delete = function() {
+		swal({
+			title: "警告",
+			text: "真的要删除 "+$scope.User_name+" 吗？",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#DD6B55",
+			confirmButtonText: "删除掉吧",
+			cancelButtonText: "再想想",
+			closeOnConfirm: false,
+			closeOnCancel: false
+		}, function(isConfirm) {
+			if (isConfirm) {
+				swal("删除啦", "这个助理消失啦", "success");
+			} else {
+				swal("取消啦", "取消成功！", "error");
+			}
+		});
 	}
 
 	$scope.HisTableTitle = "2016年3月工时统计表";

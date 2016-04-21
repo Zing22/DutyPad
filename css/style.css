@@ -80,7 +80,7 @@ div.attached.segment {
 
 .top-title {
 	/*margin-top: 10px;*/
-	margin-bottom: -15px;
+	/*margin-bottom: -15px;*/
 	border-bottom: 1px double darkgray;
 }
 
@@ -116,11 +116,31 @@ body > .grid {
 	max-width: 450px;
 }
 
+
 /* Times */
+
 .small.ui.progress {
 	margin-bottom: 0px;
 }
 
 
 /* manage */
-.pad0,.pad1,.pad2,.pad3,.pad4 {padding-top: 20px;}
+
+.pad0,
+.pad1,
+.pad2,
+.pad3,
+.pad4 {
+	padding-top: 20px;
+}
+
+
+/*文字自动省略*/
+
+.auto-hide {
+	/*width: 2em;*/
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	overflow: hidden;
+}
