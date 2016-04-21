@@ -27,6 +27,7 @@
 		<link href="//cdn.bootcss.com/semantic-ui/2.1.8/components/modal.min.css" rel="stylesheet">
 		<!--My CSS-->
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
+		<link rel="stylesheet" type="text/css" href="../css/sweetalert.css" />
 		<!--sementic js-->
 		<script src="http://libs.useso.com/js/jquery/2.1.1/jquery.min.js" type="text/javascript"></script>
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/semantic.js"></script>
@@ -64,12 +65,12 @@
 
 			<div class="ui container piled segment" id="Main">
 				<div class="ui top attached tabular menu">
-					<span class="item"><b>签到本   </b></span>
-					<a class="green item active" ng-click="pad0=1; pad1=0; pad2=0">我的工时详情</a>
-					<a class="green item" ng-click="pad0=0; pad1=1; pad2=0">本月工时</a>
-					<a class="green item" ng-click="pad0=0; pad1=0; pad2=1">历史工时</a>
+					<span class="item"><i class="tasks layout icon"></i></span>
+					<a class="green item active" ng-click="changePad(0)">我的工时详情</a>
+					<a class="green item" ng-click="changePad(1)">本月工时</a>
+					<a class="green item" ng-click="changePad(2)">历史工时</a>
 				</div>
-				<div class="pad0" ng-show="pad0">
+				<div class="pad0" ng-show="nowPad==0">
 					<div class="ui one column grid">
 						<div class="row fluid">
 							<div class="five wide column fluid">
@@ -81,11 +82,11 @@
 						<div class="row">
 							<div class="sixteen wide column">
 								<div class="ui progress-row">
-									<div class="ui large indicating progress" data-value="{{nowTimes}}" data-total="40" id="my-progress">
+									<div class="ui large indicating progress" data-value="{{nowTimes}}" data-total="{{Math.max(40, nowTimes)}}" id="my-progress">
 										<div class="bar">
 											<div class="progress"></div>
 										</div>
-										<div class="label">本月工时：{{nowTimes}}， 累积工时：{{accTimes}}，总值：￥{{(nowTimes+accTimes)*perWorth | number:2}}</div>
+										<div class="label">本月工时：{{nowTimes}}， 累积工时：{{accTimes}}，总值：{{(nowTimes+accTimes)*perWorth | currency : '￥'}}</div>
 									</div>
 								</div>
 							</div>
@@ -100,8 +101,8 @@
 
 							</div>
 							<div class="four wide column">
-								<div class="ui button basic animated fade black huge fluid" tabindex="0" ng-click="setBeginDay()">
-									<div class="visible content">{{checkBeginDateStr}}</div>
+								<div class="ui button basic animated fade black huge fluid" tabindex="0" ng-click="setBeginDayShow()">
+									<div class="visible content">{{checkBeginDate | date: 'yyyy年MM月dd日'}}</div>
 									<div class="inverted hidden content">
 										<i class="calendar outline icon"></i> 更改起始日期
 									</div>
@@ -120,44 +121,25 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="positive">
-										<td rowspan="3">3-14</td>
-										<td>8:00 - 12:30</td>
-										<td>{{4.5 * 1.5}}</td>
-										<td>加班</td>
-										<td>无</td>
-									</tr>
-									<tr class="warning">
-										<td>13:30 - 6:30</td>
-										<td>7</td>
-										<td>拖堂了！</td>
-										<td>无</td>
-									</tr>
-									<tr>
-										<td>19:00 - 21:45</td>
-										<td>2.75</td>
-										<td>无</td>
-										<td>无</td>
-									</tr>
-									<tr class="error">
-										<td>3-13</td>
-										<td>8:00 - 12:30</td>
-										<td>-2</td>
-										<td>迟到一节课，让老师找不到助理，导致上课事故。</td>
-										<td>无</td>
+									<tr ng-repeat="record in PadList" class="{{record.isImportant | padHighlight}}">
+										<td>{{record.date | limitTo : 7}}</td>
+										<td>{{record.beginTime | limitTo : 5}} - {{record.endTime | limitTo : 5}}</td>
+										<td>{{record.times | number : 2}}</td>
+										<td>{{record.note | isEmpty}}</td>
+										<td>{{record.needTo | isEmpty}}</td>
 									</tr>
 								</tbody>
 							</table>
 						</div>
 						<div class="row centered">
-							<div class="ui button basic animated fade grey" tabindex="0" id="addMore1">
+							<div class="ui button basic animated fade grey" tabindex="0" id="addMore">
 								<div class="visible content">加载更多</div>
 								<div class="inverted hidden content"><i class="icon plus"></i> more</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="pad1" ng-show="pad1">
+				<div class="pad1" ng-show="nowPad==1">
 					<div class="ui column grid middle aligned">
 						<div class="row fluid">
 							<div class="five wide column fluid">
@@ -179,57 +161,18 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>小彬</td>
+										<tr ng-repeat="row in MonthList" class="month-row">
+											<td>{{$index + 1}}</td>
+											<td>{{row.name}}</td>
 											<td>
-												<div class="ui small indicating progress" data-value="33" data-total="40">
+												<div class="ui small indicating progress" data-value="{{row.times}}" data-total="Math.max(40, row.times)">
 													<div class="bar">
 														<div class="progress"></div>
 													</div>
 												</div>
 											</td>
-											<td>12</td>
-											<td>45</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>欧阳嘉诚</td>
-											<td>
-												<div class="ui small indicating progress" data-value="4" data-total="40">
-													<div class="bar">
-														<div class="progress"></div>
-													</div>
-												</div>
-											</td>
-											<td>0</td>
-											<td>4</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>李煜政</td>
-											<td>
-												<div class="ui small indicating progress" data-value="16" data-total="40">
-													<div class="bar">
-														<div class="progress"></div>
-													</div>
-												</div>
-											</td>
-											<td>8</td>
-											<td>24</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>赖梓威</td>
-											<td>
-												<div class="ui small indicating progress" data-value="40" data-total="40">
-													<div class="bar">
-														<div class="progress"></div>
-													</div>
-												</div>
-											</td>
-											<td>4</td>
-											<td>44</td>
+											<td>{{row.last}}</td>
+											<td>{{row.last + row.times}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -238,13 +181,17 @@
 					</div>
 				</div>
 
-				<div class="pad2" ng-show="pad2">
+				<div class="pad2" ng-show="nowPad==2">
 					<div class="ui column grid middle aligned">
 						<div class="row fluid">
 							<div class="five wide column fluid">
 								<div class="ui top-title fluid">
 									<h1 class="fluid">历史工时</h1>
 								</div>
+							</div>
+							<div class="seven wide column"></div>
+							<div class="four wide column fluid">
+								<select class="ui search dropdown" ng-model="checkHistory" ng-options="key as value for (key , value) in historyList" ng-change="getHistoryTable()"></select>
 							</div>
 						</div>
 						<div class="row fluid">
@@ -263,15 +210,15 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>1</td>
-											<td>小彬</td>
-											<td>14348888</td>
-											<td>47</td>
-											<td>24</td>
-											<td>40</td>
-											<td>31</td>
-											<td>帮忙搬东西+3</td>
+										<tr ng-repeat="row in nowHistoryTable">
+											<td>{{$index + 1}}</td>
+											<td>{{row.name}}</td>
+											<td>{{row.sid}}</td>
+											<td>{{row.times}}</td>
+											<td>{{row.last}}</td>
+											<td>{{row.willGet}}</td>
+											<td>{{row.willLast}}</td>
+											<td class="auto-hide">{{row.note}}</td>
 										</tr>
 									</tbody>
 								</table>
@@ -282,14 +229,14 @@
 				</div>
 				<div class="ui modal small" id="setBeginDayModal">
 					<div class="header">
-						客官，今天是{{checkBeginDateStr}}，要翻到哪页呢？
+						客官，现在是{{checkBeginDateShow | date : 'yyyy-MM-dd'}}，要翻到哪页呢？
 					</div>
 					<div class="content">
 						<div class="ui grid middle aligned">
 							<div class="row">
 								<div class="column six wide">
 									<div class="ui left icon input fluid">
-										<input type="date" ng-model="checkBeginDate">
+										<input type="date" ng-model="checkBeginDateModify" min="2016-05-01" max="2099-05-01">
 										<i class="calendar icon"></i>
 									</div>
 								</div>
@@ -297,7 +244,7 @@
 						</div>
 					</div>
 					<div class="actions">
-						<div class="ui approve green inverted button" ng-click="alertDate()">确定</div>
+						<div class="ui approve green inverted button" ng-click="setBeginDay()">确定</div>
 					</div>
 				</div>
 
@@ -319,6 +266,7 @@
 		<script type="text/javascript" src="../js/script.js"></script>
 		<script type="text/javascript" src="../js/controllers.js"></script>
 		<script type="text/javascript" src="../js/style.js"></script>
+		<script src="../js/sweetalert.min.js" type="text/javascript" charset="utf-8"></script>
 		<script>
 			document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
 		</script>

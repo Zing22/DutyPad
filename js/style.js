@@ -38,15 +38,6 @@ $(document).ready(function() {
 			transition: 'overlay',
 			mobileTransition: 'overlay'
 		});
-
-	$('#my-progress')
-		.progress({
-			label: 'ratio',
-			text: {
-				ratio: '{value} / {total}'
-			}
-		});
-
 	$('.small.ui.progress')
 		.progress({
 			label: 'ratio',
