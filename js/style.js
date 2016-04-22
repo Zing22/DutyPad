@@ -48,9 +48,9 @@ $(document).ready(function() {
 	
 	$('.ui.search.dropdown')
 		.dropdown();
+
 	$('.ui.dropdown')
 		.dropdown();
-	
-	
+
 	$("body").fadeIn();
 });
