@@ -50,5 +50,7 @@ $(document).ready(function() {
 		.dropdown();
 	$('.ui.dropdown')
 		.dropdown();
-;
+	
+	
+	$("body").fadeIn();
 });

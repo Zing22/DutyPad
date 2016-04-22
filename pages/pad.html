@@ -68,13 +68,14 @@
 					<span class="item"><i class="book icon"></i></span>
 					<a class="green item active" ng-click="changePad(0)">值班总览</a>
 					<a class="green item" ng-click="changePad(1)">B401</a>
-					<a class="green item" ng-click="changePad(2)">B402</a>
-					<a class="green item" ng-click="changePad(3)">B403</a>
+					<a class="orange item" ng-click="changePad(2)">B402</a>
+					<a class="blue item" ng-click="changePad(3)">B403</a>
 					<a class="green item" ng-click="changePad(4)">奖惩记录</a>
+					<a class="green item" ng-click="changePad(5)">通讯录</a>
 				</div>
 
 				<div class="ui bottom attached segment">
-					<div class="pad0" ng-show="!(nowPad - 0)">
+					<div class="pad0" ng-show="nowPad == 0">
 						<div class="ui two column grid">
 							<div class="row fluid">
 								<div class="five wide column fluid">
@@ -137,7 +138,7 @@
 
 						</div>
 					</div>
-					<div class="pad1" ng-show="!(nowPad - 1)">
+					<div class="pad1" ng-show="nowPad == 1">
 						<div class="progress-row">
 							<div class="ui one column grid">
 								<div class="sixteen wide column">
@@ -155,7 +156,7 @@
 
 									</div>
 									<div class="four wide column">
-										<div class="ui button basic animated fade black huge fluid" tabindex="0">
+										<div class="ui button basic animated fade black fluid" tabindex="0">
 											<div class="visible content">{{checkBeginDate401 | date: 'yyyy年MM月dd日'}}</div>
 											<div class="inverted hidden content" ng-click="setBeginDayShow()">
 												<i class="calendar outline icon"></i> 更改起始日期
@@ -188,7 +189,7 @@
 									</table>
 								</div>
 								<div class="row centered">
-									<div class="ui button basic animated fade grey" tabindex="0" id="addMore1">
+									<div class="ui button basic animated fade grey" tabindex="0" id="addMore401">
 										<div class="visible content">加载更多</div>
 										<div class="inverted hidden content"><i class="icon plus"></i> more</div>
 									</div>
@@ -197,32 +198,128 @@
 						</div>
 					</div>
 
-					<div class="pad2" ng-show="!(nowPad - 2)">
+					<div class="pad2" ng-show="nowPad == 2">
 						<div class="progress-row">
 							<div class="ui one column grid">
 								<div class="sixteen wide column">
-									<div class="ui fluid orange inverted button huge">
+									<div class="ui fluid orange inverted button huge" ng-click="newRecordShow('B402')">
 										<i class="icon plus"></i> 签到
+									</div>
+								</div>
+								<div class="row fluid">
+									<div class="five wide column fluid">
+										<div class="ui top-title fluid">
+											<h1 class="fluid">值班记录本</h1>
+										</div>
+									</div>
+									<div class="seven wide column fluid">
+
+									</div>
+									<div class="four wide column">
+										<div class="ui button basic animated fade black fluid" tabindex="0">
+											<div class="visible content">{{checkBeginDate402 | date: 'yyyy年MM月dd日'}}</div>
+											<div class="inverted hidden content" ng-click="setBeginDayShow()">
+												<i class="calendar outline icon"></i> 更改起始日期
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="column">
+									<table class="ui table selectable complex">
+										<thead>
+											<tr>
+												<th class="one wide column">日期</th>
+												<th class="two wide column">时间</th>
+												<th class="one wide column">工时</th>
+												<th class="one wide column">姓名</th>
+												<th class="five wide column">值班说明</th>
+												<th class="six wide column">待办事项</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="record in PadList402" class="{{record.isImportant | padHighlight}}">
+												<td>{{record.date | limitTo : 7}}</td>
+												<td>{{record.beginTime | limitTo : 5}} - {{record.endTime | limitTo : 5}}</td>
+												<td>{{record.times | number : 2}}</td>
+												<td>{{record.name}}</td>
+												<td>{{record.note | isEmpty}}</td>
+												<td>{{record.needTo | isEmpty}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="row centered">
+									<div class="ui button basic animated fade grey" tabindex="0" id="addMore402">
+										<div class="visible content">加载更多</div>
+										<div class="inverted hidden content"><i class="icon plus"></i> more</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="pad3" ng-show="!(nowPad - 3)">
+					<div class="pad3" ng-show="nowPad == 3">
 						<div class="progress-row">
 
 							<div class="ui one column grid">
 								<div class="sixteen wide column">
-									<div class="ui fluid blue inverted button huge">
+									<div class="ui fluid blue inverted button huge" ng-click="newRecordShow('B403')">
 										<i class="icon plus"></i> 签到
+									</div>
+								</div>
+								<div class="row fluid">
+									<div class="five wide column fluid">
+										<div class="ui top-title fluid">
+											<h1 class="fluid">值班记录本</h1>
+										</div>
+									</div>
+									<div class="seven wide column fluid">
+
+									</div>
+									<div class="four wide column">
+										<div class="ui button basic animated fade black fluid" tabindex="0">
+											<div class="visible content">{{checkBeginDate403 | date: 'yyyy年MM月dd日'}}</div>
+											<div class="inverted hidden content" ng-click="setBeginDayShow()">
+												<i class="calendar outline icon"></i> 更改起始日期
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="column">
+									<table class="ui table selectable complex">
+										<thead>
+											<tr>
+												<th class="one wide column">日期</th>
+												<th class="two wide column">时间</th>
+												<th class="one wide column">工时</th>
+												<th class="one wide column">姓名</th>
+												<th class="five wide column">值班说明</th>
+												<th class="six wide column">待办事项</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="record in PadList403" class="{{record.isImportant | padHighlight}}">
+												<td>{{record.date | limitTo : 7}}</td>
+												<td>{{record.beginTime | limitTo : 5}} - {{record.endTime | limitTo : 5}}</td>
+												<td>{{record.times | number : 2}}</td>
+												<td>{{record.name}}</td>
+												<td>{{record.note | isEmpty}}</td>
+												<td>{{record.needTo | isEmpty}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="row centered">
+									<div class="ui button basic animated fade grey" tabindex="0" id="addMore403">
+										<div class="visible content">加载更多</div>
+										<div class="inverted hidden content"><i class="icon plus"></i> more</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 
-					<div class="pad4" ng-show="!(nowPad - 4)">
+					<div class="pad4" ng-show="nowPad == 4">
 						<div class="progress-row">
 							<div class="ui one column grid">
 								<div class="row fluid">
@@ -235,7 +332,7 @@
 
 									</div>
 									<div class="four wide column">
-										<div class="ui button basic animated fade black huge fluid" tabindex="0">
+										<div class="ui button basic animated fade black fluid" tabindex="0">
 											<div class="visible content">{{checkBeginDate404 | date: 'yyyy年MM月dd日'}}</div>
 											<div class="inverted hidden content" ng-click="setBeginDayShow()">
 												<i class="calendar outline icon"></i> 更改起始日期
@@ -264,10 +361,51 @@
 									</table>
 								</div>
 								<div class="row centered">
-									<div class="ui button basic animated fade grey" tabindex="0" id="addMore4">
+									<div class="ui button basic animated fade grey" tabindex="0" id="addMore404">
 										<div class="visible content">加载更多</div>
 										<div class="inverted hidden content"><i class="icon plus"></i> more</div>
 									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="pad5" ng-show="nowPad == 5">
+						<div class="progress-row">
+
+							<div class="ui one column grid">
+								
+								<div class="row fluid">
+									<div class="five wide column fluid">
+										<div class="ui top-title fluid">
+											<h1 class="fluid">通讯录</h1>
+										</div>
+									</div>
+								</div>
+								<div class="column">
+									
+									<table class="ui table selectable complex">
+										<thead>
+											<tr>
+												<th class="one wide column">#</th>
+												<th class="one wide column">姓名</th>
+												<th class="two wide column">学号</th>
+												<th class="three wide column">手机</th>
+												<th class="two wide column">短号</th>
+												<th class="three wide column">邮箱</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr ng-repeat="row in contacts">
+												<td>{{$index + 1}}</td>
+												<td>{{row.name   | isEmpty}}</td>
+												<td>{{row.sid    | isEmpty}}</td>
+												<td>{{row.phone  | isEmpty}}</td>
+												<td>{{row.phone2 | isEmpty}}</td>
+												<td>{{row.email  | isEmpty}}</td>
+											</tr>
+										</tbody>
+									</table>
 								</div>
 							</div>
 						</div>

@@ -41,7 +41,7 @@
 
 	</head>
 
-	<body>
+	<body style="display: none;">
 		<div class="ui left demo vertical sidebar labeled icon menu inverted active">
 			<a class="item" href="pad.html">
 				<i class="book icon"></i> 本子
@@ -189,22 +189,22 @@
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">姓名： </div>
-									<input type="text" placeholder="拒绝非主流昵称" ng-model="newUser_name">
+									<div class="ui label">密码： </div>
+									<input type="text" placeholder="多弱都行..." ng-model="newUser_pwd">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">密码： </div>
-									<input type="password" placeholder="多弱都行..." ng-model="newUser_pwd">
+									<div class="ui label">姓名： </div>
+									<input type="text" placeholder="拒绝非主流昵称" ng-model="newUser_name">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">重复： </div>
-									<input type="password" placeholder="要和上一个相同..." ng-model="newUser_pwd2">
+									<div class="ui label">邮箱： </div>
+									<input type="text" placeholder="其实..." ng-model="newUser_email">
 								</div>
 							</div>
 						</div>
@@ -236,9 +236,9 @@
 									<div class="ui label">身份： </div>
 									<select class="ui search dropdown" ng-model="newUser_auth">
 										<option value="">这就是人生啊...</option>
-										<option value="0">助理	</option>
-										<option value="1">管理员</option>
-										<option value="2">老大</option>
+										<option value="1">助理	</option>
+										<option value="2">管理员</option>
+										<option value="3">老大</option>
 									</select>
 								</div>
 							</div>
@@ -267,22 +267,22 @@
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">姓名： </div>
-									<input type="text" placeholder="拒绝非主流昵称" ng-model="User_name">
+									<div class="ui label">密码： </div>
+									<input type="text" placeholder="多弱都行..." ng-model="User_pwd">
 								</div>
 							</div>
 						</div>
 						<div class="row">
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">密码： </div>
-									<input type="text" placeholder="多弱都行..." ng-model="User_pwd">
+									<div class="ui label">姓名： </div>
+									<input type="text" placeholder="拒绝非主流昵称" ng-model="User_name">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
-									<div class="ui label">重复： </div>
-									<input type="text" placeholder="要和上一个相同..." ng-model="User_pwd2">
+									<div class="ui label">邮箱： </div>
+									<input type="text" placeholder="其实..." ng-model="User_email">
 								</div>
 							</div>
 						</div>
@@ -320,10 +320,10 @@
 									<input type="hidden" name="gender" ng-model="User_auth"/>
 									<div class="default text">这就是人生啊...</div>
 									<div class="menu">
-										<div class="item" data-value="0" data-text="助理">
+										<div class="item" data-value="1" data-text="助理">
 											<i class="user icon"></i> 助理
 										</div>
-										<div class="item" data-value="1" data-text="管理员">
+										<div class="item" data-value="2" data-text="管理员">
 											<i class="user icon"></i> 管理员
 										</div>
 										<div class="item" data-value="3" data-text="老大">
@@ -345,7 +345,7 @@
 
 				<div class="ui modal small" id="setNewRecord">
 					<div class="header">
-						正在给 {{nowName}} 新增奖惩记录...
+						正在给 {{nameList[nowWho]}} 新增奖惩记录...
 					</div>
 					<div class="content">
 						<div class="ui grid middle aligned">
@@ -355,7 +355,7 @@
 								</div>
 								<div class="column four wide">
 									<div class="ui left icon input fluid">
-										<input type="number" placeholder="默认*奖励*" min="0">
+										<input type="number" placeholder="默认为*奖励*" min="0">
 										<i class="wait icon"></i>
 									</div>
 								</div>
@@ -391,7 +391,7 @@
 					<div class="content">
 						<div class="ui grid middle aligned">
 							<div class="row">
-								<div class="column two wide">
+								<div class="column three wide">
 									统计表标题：
 								</div>
 								<div class="column ten wide">
