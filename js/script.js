@@ -77,3 +77,15 @@ $("#SideBar").click(function() {
 $("#SideBar").mouseover(function() {
 	$('.ui.labeled.icon.sidebar').not('.styled').sidebar('show');
 });
+
+
+// global functions
+var failFor500 = function() {
+	swal({
+		title: "爆炸了",
+		text: "后台服务器炸了，请尽快联系技术人员",
+		type: "error",
+		confirmButtonText: "好"
+	});
+	return false;
+}
