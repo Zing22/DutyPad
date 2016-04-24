@@ -51,6 +51,8 @@ $(document).ready(function() {
 
 	$('.ui.dropdown')
 		.dropdown();
+	
+	$(".popup").popup();
 
 	$("body").fadeIn();
 });

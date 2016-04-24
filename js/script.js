@@ -49,7 +49,7 @@ $(document).ready(function() {
 			} else {
 				location.href = "./pad.html";
 			}
-		})
+		}).fail(failFor500);
 	})
 	// login end
 
@@ -87,5 +87,4 @@ var failFor500 = function() {
 		type: "error",
 		confirmButtonText: "好"
 	});
-	return false;
 }

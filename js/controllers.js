@@ -43,6 +43,7 @@ app.controller('PadController', function($scope) {
 	$scope.nowTimes = 0;
 	$scope.accTimes = 0;
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		console.log(data);
 		$scope.nowTimes = 61;
 		$scope.accTimes = 4;
 		$scope.$apply();
@@ -54,7 +55,7 @@ app.controller('PadController', function($scope) {
 				ratio: '{value} / {total}'
 			}
 		})
-	});
+	}, "json").fail(failFor500);
 
 	// 读取待办事项
 	$scope.todoList = [];
@@ -73,7 +74,7 @@ app.controller('PadController', function($scope) {
 			"id": 1
 		}];
 		$scope.$apply();
-	});
+	}, "json").fail(failFor500);
 
 	// 解决了待办事项 , id需要获取。
 	$scope.nowFixing = -1; // 正在解决哪个待办事项
@@ -94,7 +95,7 @@ app.controller('PadController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
-		});
+		}, "json").fail(failFor500);
 	}
 
 	// 查看本子
@@ -135,7 +136,7 @@ app.controller('PadController', function($scope) {
 			}]);
 			$scope.$apply();
 			btn.removeClass("loading");
-		});
+		}, "json").fail(failFor500);
 	}); // 401 end
 	
 	
@@ -174,7 +175,7 @@ app.controller('PadController', function($scope) {
 			}]);
 			$scope.$apply();
 			btn.removeClass("loading");
-		});
+		}, "json").fail(failFor500);
 	}); // 402 end
 	
 	$scope.PadList403 = []; // 储存已经加载到的列表
@@ -212,7 +213,7 @@ app.controller('PadController', function($scope) {
 			}]);
 			$scope.$apply();
 			btn.removeClass("loading");
-		});
+		}, "json").fail(failFor500);
 	}); // 403 end
 
 	// 奖惩记录
@@ -245,7 +246,7 @@ app.controller('PadController', function($scope) {
 			}]);
 			$scope.$apply();
 			btn.removeClass("loading");
-		});
+		}, "json").fail(failFor500);
 	});
 
 	// 设置起始日期
@@ -353,7 +354,7 @@ app.controller('PadController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
-		})
+		}, "json").fail(failFor500);
 	}
 	$scope.nowDate = getNowDateStr();
 
@@ -370,7 +371,7 @@ app.controller('PadController', function($scope) {
 			"email": "233@qq.com"
 		}];
 		$scope.$apply();
-	});
+	}, "json").fail(failFor500);
 
 	$scope.Math = window.Math;
 });
@@ -402,7 +403,7 @@ app.controller('TimesController', function($scope, $filter) {
 				ratio: '{value} / {total}'
 			}
 		})
-	});
+	}, "json").fail(failFor500);
 
 	// 查看个人工时记录
 	$scope.PadList = []; // 储存已经加载到的列表
@@ -437,7 +438,7 @@ app.controller('TimesController', function($scope, $filter) {
 			}]);
 			$scope.$apply();
 			btn.removeClass("loading");
-		});
+		}, "json").fail(failFor500);
 	});
 
 	// 更改起始日期
@@ -489,7 +490,7 @@ app.controller('TimesController', function($scope, $filter) {
 			});
 			//			console.log(times);
 		});
-	});
+	}, "json").fail(failFor500);
 
 	// 查看历史工时
 	$scope.historyList = {
@@ -503,7 +504,7 @@ app.controller('TimesController', function($scope, $filter) {
 			"2": "2016/04工时统计"
 		}; // 获得待选列表
 		$scope.$apply();
-	});
+	}, "json").fail(failFor500);
 
 	$scope.getHistoryTable = function() {
 		var params = {
@@ -529,7 +530,7 @@ app.controller('TimesController', function($scope, $filter) {
 				"note": "FFC比赛加班 +12"
 			}]
 			$scope.$apply();
-		});
+		}, "json").fail(failFor500);
 	}
 
 	$scope.Math = window.Math;
@@ -559,7 +560,7 @@ app.controller('ManageController', function($scope) {
 			"3": "高山"
 		}
 		$scope.$apply();
-	});
+	}, "json").fail(failFor500);
 
 	$scope.selectPerson = function() {
 		var params = {
@@ -605,7 +606,7 @@ app.controller('ManageController', function($scope) {
 				"color": -1
 			}];
 			$scope.$apply();
-		});
+		}, "json").fail(failFor500);
 	}
 
 	// check duty record
@@ -634,7 +635,7 @@ app.controller('ManageController', function($scope) {
 			"note": "FFC比赛加班 +12"
 		}]
 		$scope.$apply();
-	});
+	}, "json").fail(failFor500);
 
 	// 显示确定死表的框
 	$scope.NewDeadTable = function() {
@@ -654,7 +655,7 @@ app.controller('ManageController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
-		});
+		}, "json").fail(failFor500);
 	}
 
 	// 助理管理
@@ -706,7 +707,7 @@ app.controller('ManageController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
-		});
+		}, "json").fail(failFor500);
 	};
 
 	// 查看、修改用户信息
@@ -737,7 +738,7 @@ app.controller('ManageController', function($scope) {
 			$scope.User_auth = 2; // 权限（身份）
 			$("#User-select").dropdown('set selected', auth[$scope.User_auth]);
 			$scope.$apply();
-		});
+		}, "json").fail(failFor500);
 	}
 	$scope.User_check = function() {
 		if (!($scope.User_sid && $scope.User_name && $scope.User_pwd && $scope.User_email && $scope.User_phone && $scope.User_phone2 &&
@@ -769,7 +770,7 @@ app.controller('ManageController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
-		});
+		}, "json").fail(failFor500);
 	}
 
 	$scope.User_delete = function() {

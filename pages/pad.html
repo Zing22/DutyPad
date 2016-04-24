@@ -25,6 +25,7 @@
 		<link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/semantic-ui/2.1.8/components/transition.min.css">
 		<link href="//cdn.bootcss.com/semantic-ui/2.1.8/components/sidebar.min.css" rel="stylesheet">
 		<link href="//cdn.bootcss.com/semantic-ui/2.1.8/components/modal.min.css" rel="stylesheet">
+		<link href="//cdn.bootcss.com/semantic-ui/2.1.8/components/popup.min.css" rel="stylesheet">
 		<!--My CSS-->
 		<link rel="stylesheet" type="text/css" href="../css/style.css" />
 		<link rel="stylesheet" type="text/css" href="../css/sweetalert.css" />
@@ -38,6 +39,7 @@
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/visibility.min.js"></script>
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/modal.min.js"></script>
 		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/sidebar.min.js"></script>
+		<script src="//cdn.bootcss.com/semantic-ui/2.1.8/components/popup.min.js"></script>
 
 	</head>
 
@@ -377,7 +379,7 @@
 						<div class="progress-row">
 
 							<div class="ui one column grid">
-								
+
 								<div class="row fluid">
 									<div class="five wide column fluid">
 										<div class="ui top-title fluid">
@@ -386,7 +388,7 @@
 									</div>
 								</div>
 								<div class="column">
-									
+
 									<table class="ui table selectable complex">
 										<thead>
 											<tr>
@@ -401,11 +403,11 @@
 										<tbody>
 											<tr ng-repeat="row in contacts">
 												<td>{{$index + 1}}</td>
-												<td>{{row.name   | isEmpty}}</td>
-												<td>{{row.sid    | isEmpty}}</td>
-												<td>{{row.phone  | isEmpty}}</td>
+												<td>{{row.name | isEmpty}}</td>
+												<td>{{row.sid | isEmpty}}</td>
+												<td>{{row.phone | isEmpty}}</td>
 												<td>{{row.phone2 | isEmpty}}</td>
-												<td>{{row.email  | isEmpty}}</td>
+												<td>{{row.email | isEmpty}}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -531,12 +533,12 @@
 
 			<div class="ui vertical footer segment" id="footer">
 				<div class="ui center aligned container">
-					<img src="http://semantic-ui.com/examples/assets/images/logo.png" class="ui centered mini image">
+					<img src="../img/232315999714980863.png" class="ui centered mini image">
 					<div class="ui horizontal small divided link list">
-						<a class="item" href="#">Site Map</a>
-						<a class="item" href="#">Contact Us</a>
-						<a class="item" href="#">Terms and Conditions</a>
-						<a class="item" href="#">Privacy Policy</a>
+						<a class="item popup" title="教学实验中心B栋4楼">SYSU Lab</a>
+						<a class="item popup" href="http://www.leezing.com" title="Front-end">Zing Lee</a>
+						<a class="item popup" title="Back-end">Ziwei Lai</a>
+						<a class="item">Copyright © 2016</a>
 					</div>
 				</div>
 			</div>
