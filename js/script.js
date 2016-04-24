@@ -1,15 +1,54 @@
 var app = angular.module('DutyPad', ['ng']);
 
 $(document).ready(function() {
+	$("input[name='username']").focus();
 	// login begin
 	$("#login-btn").click(function(event) {
+		var usr = $("input[name='username']").val(),
+			pwd = $("input[name='password']").val();
+		if(!usr) {
+			swal({
+				title: "啊噢",
+				text: "学号不能为空",
+				type: "warning",
+				confirmButtonText: "好"
+			},
+			function(){
+				$("input[name='username']").focus();
+			});
+			return false;
+		} else if(!pwd) {
+			swal({
+				title: "啊噢",
+				text: "密码不能为空",
+				type: "warning",
+				confirmButtonText: "好"
+			},
+			function(){
+				$("input[name='password']").focus();
+			});
+			return false;
+		}
 		var param = {
-			"username": $("input[name='username']").val(),
-			"password": $("input[name='password']").val()
+			"username": usr,
+			"password": pwd
 		}
 		var str = $.param(param);
 		$.post("http://127.0.0.1:5000/test", str, function(data){
-			console.log(data);
+			data = {
+				"code": 0
+			}
+			if(data.code){
+				swal({
+					title: "啊噢",
+					text: data.error,
+					type: "error",
+					confirmButtonText: "好"
+				});
+				return false;
+			} else {
+				location.href = "./pad.html";
+			}
 		})
 	})
 	// login end
