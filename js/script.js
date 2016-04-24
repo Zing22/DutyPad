@@ -88,3 +88,16 @@ var failFor500 = function() {
 		confirmButtonText: "好"
 	});
 }
+
+var checkTimeout = function(data) {
+	if(data.code && data.errorstatus === "redirectToLogin") {
+		swal({
+			title: "啊噢",
+			text: "登陆过期了，请重新登陆",
+			type: "error",
+			confirmButtonText: "好"
+		}, function() {
+			location.href="/DutyPad";
+		});
+	}
+}

@@ -46,7 +46,7 @@ app.controller('PadController', function($scope) {
 	$scope.nowTimes = 0;
 	$scope.accTimes = 0;
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
-		console.log(data);
+		checkTimeout(data);
 		$scope.nowTimes = 61;
 		$scope.accTimes = 4;
 		$scope.$apply();
@@ -63,6 +63,7 @@ app.controller('PadController', function($scope) {
 	// 读取待办事项
 	$scope.todoList = [];
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		checkTimeout(data);
 		$scope.todoList = [{
 			"room": "B401",
 			"date": "2016/03/01",
@@ -373,6 +374,7 @@ app.controller('PadController', function($scope) {
 	// 通讯录
 	$scope.contacts = [];
 	$.get("http://127.0.0.1:5000/test", "", function(){
+		checkTimeout(data);
 		$scope.contacts = [{
 			"name": "渔政",
 			"sid": "14348060",
@@ -402,6 +404,7 @@ app.controller('TimesController', function($scope, $filter) {
 	$scope.nowTimes = 0;
 	$scope.accTimes = 0;
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		checkTimeout(data);
 		$scope.nowTimes = 31.3;
 		$scope.accTimes = 4;
 		$scope.$apply();
@@ -473,6 +476,7 @@ app.controller('TimesController', function($scope, $filter) {
 	// 查看本月工时
 	$scope.MonthList = [];
 	$.get("http://127.0.0.1:5000/test", "", function() {
+		checkTimeout(data);
 		$scope.MonthList = [{
 			"name": "小彬",
 			"times": 34,
@@ -509,6 +513,7 @@ app.controller('TimesController', function($scope, $filter) {
 	$scope.nowHistoryTable = []; // 目前在查看的死表
 	$scope.checkHistory = ""; // 绑定为select的值
 	$.get("http://127.0.0.1:5000/test", "", function(data) { // 获取列表
+		checkTimeout(data);
 		$scope.historyList = {
 			"1": "2016/03工时统计",
 			"2": "2016/04工时统计"
@@ -522,6 +527,7 @@ app.controller('TimesController', function($scope, $filter) {
 		}
 		var str = $.param(params);
 		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			checkTimeout(data);
 			$scope.nowHistoryTable = [{
 				"name": "李一正",
 				"sid": "14348888",
@@ -564,6 +570,7 @@ app.controller('ManageController', function($scope) {
 	$scope.personalRecord = [];
 
 	$.get("http://127.0.0.1:5000/test", "", function(data) {
+		checkTimeout(data);
 		$scope.nameList = {
 			"1": "李煜政",
 			"2": "赖子威",
@@ -578,6 +585,7 @@ app.controller('ManageController', function($scope) {
 		}
 		var str = $.param(params);
 		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			checkTimeout(data);
 			$scope.personalRecord = [{
 				"date": "4-14",
 				"beginTime": "13:30:23",
@@ -635,6 +643,7 @@ app.controller('ManageController', function($scope) {
 	// 获取本月工时表
 	$scope.thisMonthAll = [];
 	$.get("http://127.0.0.1:5000/test", "abc=233", function(data) {
+		checkTimeout(data);
 		$scope.thisMonthAll = [{
 			"name": "小彬",
 			"sid": "14348079",
@@ -715,6 +724,7 @@ app.controller('ManageController', function($scope) {
 		var str = $.param(params);
 		console.log(str);
 		$.get("http://127.0.0.1:5000/test", str, function(data) {
+			checkTimeout(data);
 			$scope.User.sid = "14348079"; // 学号，用于登陆
 			$scope.User.name = "大斌"; // 姓名
 			$scope.User.password = "123456"; // 密码
