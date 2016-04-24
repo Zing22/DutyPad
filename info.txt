@@ -1,0 +1,3 @@
+
+"id","sid","phone","cornet","password","name","bankcard","email","power","onJob",
+"workhour","savehour"
