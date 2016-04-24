@@ -35,7 +35,10 @@ app.filter('setColor', function() {
 })
 
 app.controller('PadController', function($scope) {
+	// 常量
 	$scope.perWorth = 12; // 每小时12元
+	$scope.offsetSept = 7; // 每次加载多少天
+	// 翻页
 	$scope.nowPad = 0; // 现在是第几个选项卡
 	$scope.nowRoom = "B400"; // 正在看哪个本子
 
@@ -114,7 +117,7 @@ app.controller('PadController', function($scope) {
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
-			$scope.padBeginNumber401 += 2;
+			$scope.padBeginNumber401 += $scope.offsetSept;
 			$scope.PadList401 = $scope.PadList401.concat([{
 				"date": "2016/04/23",
 				"beginTime": "13:30:00",
@@ -153,7 +156,7 @@ app.controller('PadController', function($scope) {
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
-			$scope.padBeginNumber402 += 2;
+			$scope.padBeginNumber402 += $scope.offsetSept;
 			$scope.PadList402 = $scope.PadList402.concat([{
 				"date": "2016/04/23",
 				"beginTime": "13:30:00",
@@ -191,7 +194,7 @@ app.controller('PadController', function($scope) {
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
-			$scope.padBeginNumber403 += 2;
+			$scope.padBeginNumber403 += $scope.offsetSept;
 			$scope.PadList403 = $scope.PadList403.concat([{
 				"date": "2016/04/23",
 				"beginTime": "13:30:00",
@@ -265,25 +268,25 @@ app.controller('PadController', function($scope) {
 	}
 	$scope.setBeginDay = function() {
 		if ($scope.nowPad == 1) {
-			$scope.checkBeginDate401 = $scope.checkBeginDate;
+			$scope.checkBeginDate401 = new Date($scope.checkBeginDate);
 			$scope.PadList401 = [];
 			$scope.padBeginNumber401 = 0;
 			$('#addMore401').click(); // 重新加载401的签到记录
 		}
 		if ($scope.nowPad == 2) {
-			$scope.checkBeginDate402 = $scope.checkBeginDate;
+			$scope.checkBeginDate402 = new Date($scope.checkBeginDate);
 			$scope.PadList402 = [];
 			$scope.padBeginNumber402 = 0;
 			$('#addMore402').click(); // 重新加载402的签到记录
 		}
 		if ($scope.nowPad == 3) {
-			$scope.checkBeginDate403 = $scope.checkBeginDate;
+			$scope.checkBeginDate403 = new Date($scope.checkBeginDate);
 			$scope.PadList403 = [];
-			$scope.padBeginNumber404 = 0;
+			$scope.padBeginNumber403 = 0;
 			$('#addMore403').click(); // 重新加载403的签到记录
 		}
 		if ($scope.nowPad == 4) {
-			$scope.checkBeginDate404 = $scope.checkBeginDate;
+			$scope.checkBeginDate404 = new Date($scope.checkBeginDate);
 			$scope.PadList404 = [];
 			$scope.padBeginNumber404 = 0;
 			$('#addMore404').click(); // 重新加载奖惩记录
@@ -354,6 +357,13 @@ app.controller('PadController', function($scope) {
 				type: "success",
 				confirmButtonText: "确定"
 			});
+			
+			// 刷新当前页面，重新加载值班本子
+			$scope.checkBeginDate = new Date();
+			$scope.setBeginDay();
+			$("#newRecord-note").val("");
+			$("#newRecord-needTo").val("");
+			
 		}, "json").fail(failFor500);
 	}
 	$scope.nowDate = getNowDateStr();
@@ -659,17 +669,10 @@ app.controller('ManageController', function($scope) {
 	}
 
 	// 助理管理
-	$scope.newUser_sid = ""; // 学号，用于登陆
-	$scope.newUser_name = ""; // 姓名
-	$scope.newUser_pwd = ""; // 密码
-	$scope.newUser_email = ""; // 邮箱
-	$scope.newUser_phone = ""; // 手机长号
-	$scope.newUser_phone2 = ""; // 短号
-	$scope.newUser_card = ""; // 银行卡
-	$scope.newUser_auth = ""; // 权限（身份）
+	$scope.newUser = {};
 	$scope.newUser_check = function() {
-		if (!($scope.newUser_sid && $scope.newUser_name && $scope.newUser_pwd && $scope.newUser_email && $scope.newUser_phone && $scope.newUser_phone2 &&
-				$scope.newUser_card && $scope.newUser_auth)) {
+		if (!($scope.newUser.sid && $scope.newUser.name && $scope.newUser.password && $scope.newUser.email && $scope.newUser.phone && $scope.newUser.cornet &&
+				$scope.newUser.bankcard && $scope.newUser.power)) {
 			swal({
 				title: "失败了",
 				text: "还有些信息没填呢",
@@ -678,26 +681,17 @@ app.controller('ManageController', function($scope) {
 			});
 			return false;
 		};
-		if ($scope.newUser_pwd != $scope.newUser_email) {
-			swal({
-				title: "失败了",
-				text: "两次密码不同呢",
-				type: "error",
-				confirmButtonText: "好吧"
-			});
-			return false;
-		};
 
 		// 开始构造
 		var params = {
-			"sid": $scope.newUser_sid,
-			"name": $scope.newUser_name,
-			"pwd": $scope.newUser_pwd,
-			"email": $scope.newUser_email,
-			"phone": $scope.newUser_phone,
-			"phone2": $scope.newUser_phone2,
-			"card": $scope.newUser_card,
-			"auth": $scope.newUser_auth
+			"sid": $scope.newUser.sid,
+			"name": $scope.newUser.name,
+			"pwd": $scope.newUser.password,
+			"email": $scope.newUser.email,
+			"phone": $scope.newUser.phone,
+			"phone2": $scope.newUser.cornet,
+			"card": $scope.newUser.bankcard,
+			"auth": $scope.newUser.power
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
@@ -711,14 +705,7 @@ app.controller('ManageController', function($scope) {
 	};
 
 	// 查看、修改用户信息
-	$scope.User_sid = ""; // 学号，用于登陆
-	$scope.User_name = ""; // 姓名
-	$scope.User_pwd = ""; // 密码
-	$scope.User_email = ""; // 邮箱
-	$scope.User_phone = ""; // 手机长号
-	$scope.User_phone2 = ""; // 短号
-	$scope.User_card = ""; // 银行卡
-	$scope.User_auth = ""; // 权限（身份）
+	$scope.User = {};
 	$scope.User_nowWho = "0"; // 下拉框选择了哪个助理
 	auth = ["无", "助理", "管理员", "老大"]; // 下标对应着不同的权限数字
 	$scope.User_selectPerson = function() {
@@ -728,21 +715,21 @@ app.controller('ManageController', function($scope) {
 		var str = $.param(params);
 		console.log(str);
 		$.get("http://127.0.0.1:5000/test", str, function(data) {
-			$scope.User_sid = "14348079"; // 学号，用于登陆
-			$scope.User_name = "大斌"; // 姓名
-			$scope.User_pwd = "123456"; // 密码
-			$scope.User_email = "123456@qq.com"; // 邮箱
-			$scope.User_phone = "18819251234"; // 手机长号
-			$scope.User_phone2 = "209876"; // 短号
-			$scope.User_card = "3213312312312312312"; // 银行卡
-			$scope.User_auth = 2; // 权限（身份）
-			$("#User-select").dropdown('set selected', auth[$scope.User_auth]);
+			$scope.User.sid = "14348079"; // 学号，用于登陆
+			$scope.User.name = "大斌"; // 姓名
+			$scope.User.password = "123456"; // 密码
+			$scope.User.email = "123456@qq.com"; // 邮箱
+			$scope.User.phone = "18819251234"; // 手机长号
+			$scope.User.cornet = "209876"; // 短号
+			$scope.User.bankcard = "3213312312312312312"; // 银行卡
+			$scope.User.power = 2; // 权限（身份）
+			$("#User-select").dropdown('set selected', auth[$scope.User.power]);
 			$scope.$apply();
 		}, "json").fail(failFor500);
 	}
 	$scope.User_check = function() {
-		if (!($scope.User_sid && $scope.User_name && $scope.User_pwd && $scope.User_email && $scope.User_phone && $scope.User_phone2 &&
-				$scope.User_card && $scope.User_auth)) {
+		if (!($scope.User.sid && $scope.User.name && $scope.User.pwd && $scope.User.email && $scope.User.phone && $scope.User.cornet &&
+				$scope.User.bankcard && $scope.User.power)) {
 			swal({
 				title: "失败了",
 				text: "还有些信息没填呢",
@@ -754,14 +741,14 @@ app.controller('ManageController', function($scope) {
 
 		// 开始构造
 		var params = {
-			"sid": $scope.User_sid,
-			"name": $scope.User_name,
-			"pwd": $scope.User_pwd,
-			"email": $scope.User_email,
-			"phone": $scope.User_phone,
-			"phone2": $scope.User_phone2,
-			"card": $scope.User_card,
-			"auth": $scope.User_auth
+			"sid": $scope.User.sid,
+			"name": $scope.User.name,
+			"pwd": $scope.User.pwd,
+			"email": $scope.User.email,
+			"phone": $scope.User.phone,
+			"phone2": $scope.User.cornet,
+			"card": $scope.User.bankcard,
+			"auth": $scope.User.power
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {

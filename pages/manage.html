@@ -187,13 +187,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">学号： </div>
-									<input type="text" placeholder="用于登陆" ng-model="newUser_sid">
+									<input type="text" placeholder="用于登陆" ng-model="newUser.sid">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">密码： </div>
-									<input type="text" placeholder="多弱都行..." ng-model="newUser_pwd">
+									<input type="text" placeholder="多弱都行..." ng-model="newUser.password">
 								</div>
 							</div>
 						</div>
@@ -201,13 +201,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">姓名： </div>
-									<input type="text" placeholder="拒绝非主流昵称" ng-model="newUser_name">
+									<input type="text" placeholder="拒绝非主流昵称" ng-model="newUser.name">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">邮箱： </div>
-									<input type="text" placeholder="其实..." ng-model="newUser_email">
+									<input type="text" placeholder="其实..." ng-model="newUser.email">
 								</div>
 							</div>
 						</div>
@@ -215,13 +215,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">手机： </div>
-									<input type="text" placeholder="长号" ng-model="newUser_phone">
+									<input type="text" placeholder="长号" ng-model="newUser.phone">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">短号： </div>
-									<input type="text" placeholder="没有就留空" ng-model="newUser_phone2">
+									<input type="text" placeholder="没有就留空" ng-model="newUser.cornet">
 								</div>
 							</div>
 						</div>
@@ -229,7 +229,7 @@
 							<div class="eight wide column">
 								<div class="ui labeled input fluid">
 									<div class="ui label">银行卡号： </div>
-									<input type="text" placeholder="好多位别填错了..." ng-model="newUser_card">
+									<input type="text" placeholder="好多位别填错了..." ng-model="newUser.bankcard">
 								</div>
 							</div>
 						</div>
@@ -237,7 +237,7 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">身份： </div>
-									<select class="ui search dropdown" ng-model="newUser_auth">
+									<select class="ui search dropdown" ng-model="newUser.power">
 										<option value="">这就是人生啊...</option>
 										<option value="1">助理	</option>
 										<option value="2">管理员</option>
@@ -265,13 +265,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">学号： </div>
-									<input type="text" placeholder="用于登陆" ng-model="User_sid">
+									<input type="text" placeholder="用于登陆" ng-model="User.sid">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">密码： </div>
-									<input type="text" placeholder="多弱都行..." ng-model="User_pwd">
+									<input type="text" placeholder="多弱都行..." ng-model="User.password">
 								</div>
 							</div>
 						</div>
@@ -279,13 +279,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">姓名： </div>
-									<input type="text" placeholder="拒绝非主流昵称" ng-model="User_name">
+									<input type="text" placeholder="拒绝非主流昵称" ng-model="User.name">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">邮箱： </div>
-									<input type="text" placeholder="其实..." ng-model="User_email">
+									<input type="text" placeholder="其实..." ng-model="User.email">
 								</div>
 							</div>
 						</div>
@@ -293,13 +293,13 @@
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">手机： </div>
-									<input type="text" placeholder="长号" ng-model="User_phone">
+									<input type="text" placeholder="长号" ng-model="User.phone">
 								</div>
 							</div>
 							<div class="four wide column">
 								<div class="ui labeled input">
 									<div class="ui label">短号： </div>
-									<input type="text" placeholder="没有就留空" ng-model="User_phone2">
+									<input type="text" placeholder="没有就留空" ng-model="User.cornet">
 								</div>
 							</div>
 						</div>
@@ -307,7 +307,7 @@
 							<div class="eight wide column">
 								<div class="ui labeled input fluid">
 									<div class="ui label">银行卡号： </div>
-									<input type="text" placeholder="好多位别填错了..." ng-model="User_card">
+									<input type="text" placeholder="好多位别填错了..." ng-model="User.bankcard">
 								</div>
 							</div>
 						</div>
@@ -315,12 +315,12 @@
 							<div class="one wide column">
 								<div class="ui labeled input">
 									<div class="ui label">身份： </div>
-									<input type="hidden"/>
+									<input type="hidden" />
 								</div>
 							</div>
 							<div class="three wide column">
 								<div class="ui selection dropdown" id="User-select">
-									<input type="hidden" name="gender" ng-model="User_auth"/>
+									<input type="hidden" name="gender" ng-model="User.power" />
 									<div class="default text">这就是人生啊...</div>
 									<div class="menu">
 										<div class="item" data-value="1" data-text="助理">
@@ -415,12 +415,12 @@
 
 			<div class="ui vertical footer segment" id="footer">
 				<div class="ui center aligned container">
-					<img src="http://semantic-ui.com/examples/assets/images/logo.png" class="ui centered mini image">
+					<img src="../img/logo.png" class="ui centered mini image">
 					<div class="ui horizontal small divided link list">
-						<a class="item" href="#">Site Map</a>
-						<a class="item" href="#">Contact Us</a>
-						<a class="item" href="#">Terms and Conditions</a>
-						<a class="item" href="#">Privacy Policy</a>
+						<a class="item popup" title="教学实验中心B栋4楼">SYSU Lab</a>
+						<a class="item popup" href="http://www.leezing.com" title="Front-end">Zing Lee</a>
+						<a class="item popup" title="Back-end">Ziwei Lai</a>
+						<a class="item">Copyright © 2016</a>
 					</div>
 				</div>
 			</div>
