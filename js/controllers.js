@@ -379,7 +379,7 @@ app.controller('PadController', function($scope) {
 			"name": "渔政",
 			"sid": "14348060",
 			"phone" : "15521149494",
-			"phone2": "",
+			", ": "",
 			"email": "233@qq.com"
 		}];
 		$scope.$apply();
@@ -695,12 +695,12 @@ app.controller('ManageController', function($scope) {
 		var params = {
 			"sid": $scope.newUser.sid,
 			"name": $scope.newUser.name,
-			"pwd": $scope.newUser.password,
+			"password": $scope.newUser.password,
 			"email": $scope.newUser.email,
 			"phone": $scope.newUser.phone,
-			"phone2": $scope.newUser.cornet,
-			"card": $scope.newUser.bankcard,
-			"auth": $scope.newUser.power
+			"cornet": $scope.newUser.cornet,
+			"bankcard": $scope.newUser.bankcard,
+			"power": $scope.newUser.power
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
@@ -753,12 +753,12 @@ app.controller('ManageController', function($scope) {
 		var params = {
 			"sid": $scope.User.sid,
 			"name": $scope.User.name,
-			"pwd": $scope.User.pwd,
+			"password": $scope.User.password,
 			"email": $scope.User.email,
 			"phone": $scope.User.phone,
-			"phone2": $scope.User.cornet,
-			"card": $scope.User.bankcard,
-			"auth": $scope.User.power
+			"cornet": $scope.User.cornet,
+			"bankcard": $scope.User.bankcard,
+			"power": $scope.User.power
 		}
 		var str = $.param(params);
 		$.post("http://127.0.0.1:5000/test", str, function(data) {
@@ -781,7 +781,7 @@ app.controller('ManageController', function($scope) {
 		}
 		swal({
 			title: "警告",
-			text: "真的要删除 "+$scope.User_name+" 吗？",
+			text: "真的要删除 "+$scope.User.name+" 吗？",
 			type: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#DD6B55",

@@ -1,3 +1,15 @@
 
 "id","sid","phone","cornet","password","name","bankcard","email","power","onJob",
 "workhour","savehour"
+
+sid
+phone
+cornet // 短号
+password
+name
+bankcard
+email
+power // 权限
+
+
+待办事项的filter

@@ -144,3 +144,10 @@ body > .grid {
 	-o-text-overflow: ellipsis;
 	overflow: hidden;
 }
+
+
+/*404 page*/
+#notfound-center {
+	background-color: silver;
+	padding-top: 50%;
+}
