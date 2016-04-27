@@ -151,3 +151,8 @@ body > .grid {
 	background-color: silver;
 	padding-top: 50%;
 }
+
+/*奖惩详情*/
+.popup-hovor {
+	cursor: default;
+}

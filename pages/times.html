@@ -221,7 +221,9 @@
 											<td>{{row.last}}</td>
 											<td>{{row.willGet}}</td>
 											<td>{{row.willLast}}</td>
-											<td class="auto-hide">{{row.note}}</td>
+											<td data-html="<h6 class='ui header'>总奖惩：{{row.noteAll | number:2}}</h6>{{row.note | replaceBR}}" class="ui popup-hovor">
+												<a><i class="list icon"></i> 详情</a>
+											</td>
 										</tr>
 									</tbody>
 								</table>

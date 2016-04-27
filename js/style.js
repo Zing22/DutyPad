@@ -53,9 +53,7 @@ $(document).ready(function() {
 		.dropdown();
 	
 	$(".popup").popup();
-	$(".popup-404").popup({
-		title: "老司机：",
-		content : '...',
+	$(".popup-hover").popup({
 		hoverable : true
 	});
 

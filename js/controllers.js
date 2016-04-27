@@ -34,6 +34,14 @@ app.filter('setColor', function() {
 	}
 })
 
+
+// 替换\r\n为<br/>
+app.filter('replaceBR', function() {
+	return function(str) {
+		return str.replace(/\r\n/g, "<br/>");
+	}
+})
+
 app.controller('PadController', function($scope) {
 	// 常量
 	$scope.perWorth = 12; // 每小时12元
@@ -475,7 +483,7 @@ app.controller('TimesController', function($scope, $filter) {
 
 	// 查看本月工时
 	$scope.MonthList = [];
-	$.get("http://127.0.0.1:5000/test", "", function() {
+	$.get("http://127.0.0.1:5000/test", "", function(data) {
 		checkTimeout(data);
 		$scope.MonthList = [{
 			"name": "小彬",
@@ -535,7 +543,8 @@ app.controller('TimesController', function($scope, $filter) {
 				"last": 24,
 				"willGet": 40,
 				"willLast": 31,
-				"note": "帮忙搬东西 +3; FFC比赛加班 +12; 无故缺勤 -2; 维修小分队 +40"
+				"note": "帮忙搬东西 +3\r\nFFC比赛加班 +12\r\n无故缺勤 -2\r\n维修小分队 +40\r\n",
+				"noteAll": 30
 			}, {
 				"name": "李二正",
 				"sid": "14342288",
@@ -543,9 +552,14 @@ app.controller('TimesController', function($scope, $filter) {
 				"last": 121,
 				"willGet": 40,
 				"willLast": 104,
-				"note": "FFC比赛加班 +12"
+				"note": "FFC比赛加班 +12",
+				"noteAll": 12
 			}]
 			$scope.$apply();
+			$(".popup-hovor").popup({
+				hoverable: true,
+				position: 'left center'
+			});
 		}, "json").fail(failFor500);
 	}
 

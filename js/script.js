@@ -82,12 +82,13 @@ $("#SideBar").mouseover(function() {
 // global functions
 var failFor500 = function() {
 	swal({
-		title: "爆炸了",
-		text: "后台服务器炸了，请尽快联系技术人员",
+		title: "啊哦",
+		text: "后台出了点小问题，请联系一下技术人员~",
 		type: "error",
 		confirmButtonText: "好"
 	});
 }
+
 
 var checkTimeout = function(data) {
 	if(data.code && data.errorstatus === "redirectToLogin") {
@@ -99,5 +100,48 @@ var checkTimeout = function(data) {
 		}, function() {
 			location.href="/DutyPad";
 		});
+	}
+}
+
+var checkError = function(data) {
+	if(data.code) {
+		if(data.errorstatus === "redirectToLogin") {
+			swal({
+				title: "啊噢",
+				text: "登陆过期了，请重新登陆",
+				type: "error",
+				confirmButtonText: "好"
+			}, function() {
+				location.href="/DutyPad";
+			});
+			return;
+		}
+
+		if(data.errorstatus === "insertError") {
+			swal({
+				title: "啊噢",
+				text: "插入失败了，再试试？",
+				type: "error",
+				confirmButtonText: "好"
+			});
+			return;
+		}
+
+		if(data.errorstatus === "PowerLack") {
+			swal({
+				title: "啊噢",
+				text: "权限不足，禁止访问",
+				type: "error",
+				confirmButtonText: "好"
+			});
+			return;
+		}
+		
+		swal({
+				title: "啊噢",
+				text: "不知道什么问题，但一定你是出错了",
+				type: "error",
+				confirmButtonText: "好"
+			});
 	}
 }
